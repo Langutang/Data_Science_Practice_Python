@@ -16,7 +16,7 @@ _ = plt.ylabel('beak depth (mm)')
 # Show the plot
 plt.show()
 
-# Define function ECDF
+# Define function ECDF - Empirical Cumulative Ditribution Function
 def ecdf(data):
     """Compute ECDF for a one-dimensional array of measurements."""
     # Number of data points: n
