@@ -1,0 +1,87 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jan  9 10:27:24 2020
+
+@author: John Lang
+"""
+
+from sklearn.datasets import load_breast_cancer
+import pandas as pd
+
+lbc = load_breast_cancer()
+
+X = pd.DataFrame(lbc['data'], columns=lbc['feature_names'])
+Y = pd.DataFrame(lbc['target'], columns=['type'])
+
+# ----------------------
+# Classifier without PCA
+# ----------------------
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3,
+                                                    random_state=1234,
+                                                    stratify = Y)
+
+#Import Classifier
+from sklearn.ensemble import RandomForestClassifier
+
+rfc1 = RandomForestClassifier()
+
+rfc1.fit(X_train, Y_train)
+Y_predict1 = rfc1.predict(X_test)
+
+# Score and evaluate
+from sklearn.metrics import confusion_matrix
+cm1 = confusion_matrix(Y_test, Y_predict1)
+
+score1 = rfc1.score(X_test, Y_test)
+
+
+# ----------------------
+# Classifier WITH PCA
+# ----------------------
+
+# 1. Center the Data with Standard Scaler
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+
+x_scaled = scaler.fit_transform(X)
+
+# Is it mean around ? - x_scaled[:, 0].mean()
+
+# 2. Import PCA
+from sklearn.decomposition import PCA
+pca = PCA(n_components = 5)
+
+x_pca = pca.fit_transform(x_scaled)
+
+# implement scaled X to PCA
+X_train, X_test, Y_train, Y_test = train_test_split(x_pca, Y, test_size=0.3,
+                                                    random_state=1234,
+                                                    stratify = Y)
+
+#Import Classifier
+rfcpca = RandomForestClassifier()
+
+rfcpca.fit(X_train, Y_train)
+Y_predictpca = rfcpca.predict(X_test)
+
+# Score and evaluate
+cm_pca = confusion_matrix(Y_test, Y_predictpca)
+
+scorepca = rfcpca.score(X_test, Y_test)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
