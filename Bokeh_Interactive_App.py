@@ -1,4 +1,5 @@
 # Perform necessary imports
+#This is used on the upcoming apps
 from bokeh.io import output_file, show
 from bokeh.plotting import figure
 from bokeh.models import HoverTool, ColumnDataSource
